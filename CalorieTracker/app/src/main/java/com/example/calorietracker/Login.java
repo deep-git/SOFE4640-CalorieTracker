@@ -75,11 +75,11 @@ public class Login extends AppCompatActivity {
                     mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
+                            if (!task.isSuccessful()) {
+                                Toast.makeText(Login.this, "Login error, please try again!", Toast.LENGTH_SHORT).show();
+                            } else {
                                 Intent intent = new Intent(Login.this, Home.class);
                                 startActivity(intent);
-                            } else {
-                                Toast.makeText(Login.this, "Login error, please try again!", Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
