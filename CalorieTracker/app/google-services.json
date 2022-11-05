@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "887949165691",
+    "project_id": "calorietracker-7dc1d",
+    "storage_bucket": "calorietracker-7dc1d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:887949165691:android:f5f8fd52e8de4ded6b0ede",
+        "android_client_info": {
+          "package_name": "com.example.calorietracker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "887949165691-n40fiqbqa8eo1as924obl7lio78qfr76.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCfIWgkJxFWRgUX-4GdRfnknkYOhfGT7pQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "887949165691-n40fiqbqa8eo1as924obl7lio78qfr76.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
