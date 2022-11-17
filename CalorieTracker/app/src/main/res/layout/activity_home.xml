@@ -7,11 +7,382 @@
     tools:context=".Home">
 
     <LinearLayout
+        android:id="@+id/headerBar"
+        android:layout_width="415dp"
+        android:layout_height="80dp"
+        android:background="@drawable/header_title"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/dashboardTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Dashboard"
+            android:textColor="@color/white"
+            android:textSize="36dp"
+            android:fontFamily="@font/roboto"
+            android:layout_gravity="center"
+            android:textAlignment="center"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/calendarBar"
+        android:layout_width="415dp"
+        android:layout_height="50dp"
+        android:background="@drawable/calendar_title"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/headerBar">
+
+        <TextView
+            android:id="@+id/calendarSelection"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/roboto"
+            android:background="@drawable/calendar"
+            android:textColor="#0A3D62"
+            android:layout_marginLeft="130dp"/>
+
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textAlignment="textStart"
+            android:fontFamily="@font/roboto"
+            android:text="Today"
+            android:textColor="#0A3D62"
+            android:textSize="24dp"
+            android:layout_marginLeft="5dp"
+            tools:ignore="RtlCompat" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/totalCalorieTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="54dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="54dp"
+        android:layout_marginBottom="10dp"
+        android:fontFamily="@font/roboto"
+        android:text="Total Calories"
+        android:textAlignment="center"
+        android:textColor="#0A3D62"
+        android:textSize="30dp"
+        app:layout_constraintBottom_toTopOf="@+id/totalCalorie"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/calendarBar" />
+
+    <TextView
+        android:id="@+id/totalCalorie"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="54dp"
+        android:layout_marginEnd="54dp"
+        android:fontFamily="@font/roboto"
+        android:text="1000"
+        android:textAlignment="center"
+        android:textColor="#0A3D62"
+        android:textSize="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/totalCalorieTitle" />
+
+    <LinearLayout
+        android:id="@+id/dashboardBackground"
+        android:layout_width="415dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/dashboard_background"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/totalCalorie">
+
+        <LinearLayout
+            android:id="@+id/breakfastBackground"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="25dp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            android:background="@drawable/food_background"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/breakfastText"
+                android:layout_width="320dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/food_background"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/breakfastTitle"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/roboto"
+                    android:text="Breakfast"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textSize="30dp"/>
+
+                <TextView
+                    android:id="@+id/breakfastCalories"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/roboto"
+                    android:text="250 Cal"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textSize="24dp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/breakfastAddBackground"
+                android:layout_width="45dp"
+                android:layout_height="75dp"
+                android:layout_marginLeft="0dp"
+                android:layout_marginRight="25dp"
+                android:background="@drawable/add_food_background"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/addBreakfast"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/roboto"
+                    android:text="+"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textSize="24dp"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/lunchBackground"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="25dp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            android:background="@drawable/food_background"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/lunchText"
+                android:layout_width="320dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/food_background"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/lunchTitle"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/roboto"
+                    android:text="Lunch"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textSize="30dp"/>
+
+                <TextView
+                    android:id="@+id/lunchCalories"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/roboto"
+                    android:text="250 Cal"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textSize="24dp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/lunchAddBackground"
+                android:layout_width="45dp"
+                android:layout_height="75dp"
+                android:layout_marginLeft="0dp"
+                android:layout_marginRight="25dp"
+                android:background="@drawable/add_food_background"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/addLunch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/roboto"
+                    android:text="+"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textSize="24dp"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/dinnerBackground"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="25dp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            android:background="@drawable/food_background"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/dinnerText"
+                android:layout_width="320dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/food_background"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/dinnerTitle"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/roboto"
+                    android:text="Dinner"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textSize="30dp"/>
+
+                <TextView
+                    android:id="@+id/dinnerCalories"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/roboto"
+                    android:text="250 Cal"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textSize="24dp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/dinnerAddBackground"
+                android:layout_width="45dp"
+                android:layout_height="75dp"
+                android:layout_marginLeft="0dp"
+                android:layout_marginRight="25dp"
+                android:background="@drawable/add_food_background"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/addDinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/roboto"
+                    android:text="+"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textSize="24dp"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/snackBackground"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="25dp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            android:background="@drawable/food_background"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/snackText"
+                android:layout_width="320dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/food_background"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/snackTitle"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/roboto"
+                    android:text="Snack"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textSize="30dp"/>
+
+                <TextView
+                    android:id="@+id/snackCalories"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/roboto"
+                    android:text="250 Cal"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textSize="24dp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/snackAddBackground"
+                android:layout_width="45dp"
+                android:layout_height="75dp"
+                android:layout_marginLeft="0dp"
+                android:layout_marginRight="25dp"
+                android:background="@drawable/add_food_background"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/addSnack"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/roboto"
+                    android:text="+"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textSize="24dp"/>
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <LinearLayout
         android:id="@+id/navbar"
         android:layout_width="415dp"
         android:layout_height="80dp"
-        android:orientation="horizontal"
         android:background="@drawable/home_bar"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -20,26 +391,29 @@
             android:id="@+id/home"
             android:layout_width="wrap_content"
             android:layout_height="70dp"
-            android:layout_marginTop="5dp"
             android:layout_marginLeft="40dp"
+            android:layout_marginTop="5dp"
             android:layout_weight="1"
             app:srcCompat="@drawable/home" />
+
         <ImageView
             android:id="@+id/progress"
             android:layout_width="50dp"
             android:layout_height="70dp"
-            android:layout_weight="1"
-            android:layout_marginTop="5dp"
             android:layout_marginLeft="40dp"
+            android:layout_marginTop="5dp"
             android:layout_marginRight="40dp"
+            android:layout_weight="1"
             app:srcCompat="@drawable/progress" />
+
         <ImageView
             android:id="@+id/profile"
             android:layout_width="50dp"
             android:layout_height="70dp"
-            android:layout_weight="1"
             android:layout_marginTop="5dp"
             android:layout_marginRight="40dp"
+            android:layout_weight="1"
             app:srcCompat="@drawable/profile" />
     </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
