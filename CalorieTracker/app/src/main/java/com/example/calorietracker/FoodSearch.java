@@ -1,5 +1,6 @@
 package com.example.calorietracker;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -7,10 +8,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -25,9 +26,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class FoodSearch extends AppCompatActivity {
 
@@ -36,17 +34,19 @@ public class FoodSearch extends AppCompatActivity {
     EditText searchFood;
     RecyclerView rvCardList;
 
-    private ArrayList<foodDataModel> foodArrayList = new ArrayList<foodDataModel>();
+    private ArrayList<foodDataModel> foodArrayList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_food_search);
 
-        back = (ImageView) findViewById(R.id.back);
-        search = (ImageView) findViewById(R.id.search);
-        searchFood = (EditText) findViewById(R.id.searchFood);
-        rvCardList = (RecyclerView) findViewById(R.id.rvCardList);
+        back = findViewById(R.id.back);
+        search = findViewById(R.id.search);
+        searchFood = findViewById(R.id.searchFood);
+        rvCardList = findViewById(R.id.rvCardList);
+
+
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,7 +57,6 @@ public class FoodSearch extends AppCompatActivity {
         });
 
         search.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View view) {
                 // Instantiate the RequestQueue.
@@ -80,35 +79,32 @@ public class FoodSearch extends AppCompatActivity {
                         + "appId=[93cd396f]&"
                         + "appKey=[be3ca651707918c2a2839fc6460e4056—]";
 
-                JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            JSONArray hitArray = response.getJSONArray("hits");
+                JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, response -> {
+                    try {
+                        JSONArray hitArray = response.getJSONArray("hits");
 
-                            for (int i = 0; i < hitArray.length(); i++) {
-                                JSONObject foodDetails = hitArray.getJSONObject(i);
-                                JSONObject fields = foodDetails.getJSONObject("fields");
+                        for (int i = 0; i < hitArray.length(); i++) {
+                            JSONObject foodDetails = hitArray.getJSONObject(i);
+                            JSONObject fields = foodDetails.getJSONObject("fields");
 
-                                String itemName = fields.getString("item_name");
-                                String brandName = fields.getString("brand_name");
-                                float calories = Float.parseFloat(fields.getString("nf_calories"));
-                                float fat = Float.parseFloat(fields.getString("nf_total_fat"));;
-                                float protein = Float.parseFloat(fields.getString("nf_protein"));;
-                                float carbs = Float.parseFloat(fields.getString("nf_total_carbohydrate"));;
+                            String itemName = fields.getString("item_name");
+                            String brandName = fields.getString("brand_name");
+                            float calories = Float.parseFloat(fields.getString("nf_calories"));
+                            float fat = Float.parseFloat(fields.getString("nf_total_fat"));
+                            float protein = Float.parseFloat(fields.getString("nf_protein"));
+                            float carbs = Float.parseFloat(fields.getString("nf_total_carbohydrate"));
 
-                                foodArrayList.add(new foodDataModel(itemName,brandName,calories,fat,protein,carbs));
-                            }
-                            foodRecyclerAdapter foodAdapter = new foodRecyclerAdapter(FoodSearch.this, foodArrayList);
-                            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(FoodSearch.this, LinearLayoutManager.VERTICAL, false);
-                            rvCardList.setLayoutManager(linearLayoutManager);
-                            rvCardList.setAdapter(foodAdapter);
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                            foodArrayList.add(new foodDataModel(itemName,brandName,calories,fat,protein,carbs));
                         }
+                        foodRecyclerAdapter foodAdapter = new foodRecyclerAdapter(FoodSearch.this, foodArrayList);
+                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(FoodSearch.this, LinearLayoutManager.VERTICAL, false);
+                        rvCardList.setLayoutManager(linearLayoutManager);
+                        rvCardList.setAdapter(foodAdapter);
 
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
+
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
@@ -119,8 +115,6 @@ public class FoodSearch extends AppCompatActivity {
                 queue.add(request);
             }
         });
-
-
-
     }
+
 }

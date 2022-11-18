@@ -73,7 +73,7 @@
         </LinearLayout>
 
         <Button
-            android:id="@+id/addfood"
+            android:id="@+id/addFood"
             android:layout_width="wrap_content"
             android:layout_height="90dp"
             android:layout_alignParentRight="true"

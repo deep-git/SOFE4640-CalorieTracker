@@ -17,8 +17,8 @@ public class BreakfastList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_breakfast_list);
 
-        back = (ImageView) findViewById(R.id.back);
-        search = (ImageView) findViewById(R.id.search);
+        back = findViewById(R.id.back);
+        search = findViewById(R.id.search);
 
         back.setOnClickListener(new View.OnClickListener() {
 
