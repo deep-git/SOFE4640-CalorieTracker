@@ -67,26 +67,14 @@
         app:layout_constraintStart_toEndOf="@+id/back"
         app:layout_constraintTop_toBottomOf="@+id/headerBar" />
 
-    <ScrollView
-        android:id="@+id/foodScrollView"
+    <ListView
+        android:id="@+id/foodNames"
         android:layout_width="409dp"
         android:layout_height="599dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/search_food">
+        app:layout_constraintTop_toBottomOf="@+id/searchFood" />
 
-        <LinearLayout
-            android:id="@+id/foodList"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <ListView
-                android:id="@+id/foodItem"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </LinearLayout>
-    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
