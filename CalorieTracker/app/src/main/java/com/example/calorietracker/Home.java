@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.android.material.datepicker.MaterialDatePicker;
@@ -21,6 +22,7 @@ public class Home extends AppCompatActivity {
     ImageView profile;
     TextView calendarSelection;
     TextView date;
+    LinearLayout breakfastAddBackground;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +34,7 @@ public class Home extends AppCompatActivity {
         profile = (ImageView) findViewById(R.id.profile);
         calendarSelection = (TextView) findViewById(R.id.calendarSelection);
         date = (TextView) findViewById(R.id.date);
+        breakfastAddBackground = (LinearLayout) findViewById(R.id.breakfastAddBackground);
 
         Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
         calendar.clear();
@@ -73,6 +76,14 @@ public class Home extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Home.this, Profile.class);
+                startActivity(intent);
+            }
+        });
+
+        breakfastAddBackground.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Home.this, BreakfastList.class);
                 startActivity(intent);
             }
         });
