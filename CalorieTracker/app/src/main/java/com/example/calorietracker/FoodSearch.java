@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -12,16 +11,13 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
@@ -29,37 +25,33 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-public class BreakfastSearch extends AppCompatActivity {
+public class FoodSearch extends AppCompatActivity {
 
     ImageView back;
     ImageView search;
     EditText searchFood;
-    ListView foodNames;
-    private ArrayList<String> items;
-    private ArrayAdapter<String> itemsAdapter;
+    RecyclerView rvCardList;
 
-    ArrayList<String> foodName = new ArrayList<>();
-    ArrayList<String> foodCalories = new ArrayList<>();
+    private ArrayList<foodDataModel> foodArrayList = new ArrayList<foodDataModel>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_breakfast_search);
-
+        setContentView(R.layout.activity_food_search);
 
         back = (ImageView) findViewById(R.id.back);
         search = (ImageView) findViewById(R.id.search);
         searchFood = (EditText) findViewById(R.id.searchFood);
-        foodNames = (ListView) findViewById(R.id.foodNames);
-
-        itemsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, foodName);
+        rvCardList = (RecyclerView) findViewById(R.id.rvCardList);
 
         back.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(BreakfastSearch.this, BreakfastList.class);
+                Intent intent = new Intent(FoodSearch.this, BreakfastList.class);
                 startActivity(intent);
             }
         });
@@ -69,14 +61,26 @@ public class BreakfastSearch extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // Instantiate the RequestQueue.
-                foodNames.setAdapter(null);
-                foodName.clear();
-                RequestQueue queue = Volley.newRequestQueue(BreakfastSearch.this);
+                rvCardList = findViewById(R.id.rvCardList);
+
+                foodArrayList.clear();
+
+                RequestQueue queue = Volley.newRequestQueue(FoodSearch.this);
                 String input = searchFood.getText().toString();
-                String url = "https://api.nutritionix.com/v1_1/search/" + input + "?fields=item_name%2Citem_id%2Cbrand_name%2Cnf_calories%2Cnf_total_fat&appId=[98272eda]&appKey=[55f4c153b83df856d3fddacb2803b60f—]";
+                String url = "https://api.nutritionix.com/v1_1/search/" + input
+                        + "?results=0%3A20&cal_min=0&cal_max=50000&"
+                        + "fields=item_name%2C"
+                        + "item_id%2C"
+                        + "brand_name%2C"
+                        + "brand_id%2C"
+                        + "nf_protein%2C"
+                        + "nf_calories%2C"
+                        + "nf_total_carbohydrate%2C"
+                        + "nf_total_fat&"
+                        + "appId=[93cd396f]&"
+                        + "appKey=[be3ca651707918c2a2839fc6460e4056—]";
 
                 JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
@@ -85,27 +89,38 @@ public class BreakfastSearch extends AppCompatActivity {
                             for (int i = 0; i < hitArray.length(); i++) {
                                 JSONObject foodDetails = hitArray.getJSONObject(i);
                                 JSONObject fields = foodDetails.getJSONObject("fields");
-                                foodName.add(fields.getString("item_name"));
-                                foodCalories.add(fields.getString("nf_calories"));
+
+                                String itemName = fields.getString("item_name");
+                                String brandName = fields.getString("brand_name");
+                                float calories = Float.parseFloat(fields.getString("nf_calories"));
+                                float fat = Float.parseFloat(fields.getString("nf_total_fat"));;
+                                float protein = Float.parseFloat(fields.getString("nf_protein"));;
+                                float carbs = Float.parseFloat(fields.getString("nf_total_carbohydrate"));;
+
+                                foodArrayList.add(new foodDataModel(itemName,brandName,calories,fat,protein,carbs));
                             }
+                            foodRecyclerAdapter foodAdapter = new foodRecyclerAdapter(FoodSearch.this, foodArrayList);
+                            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(FoodSearch.this, LinearLayoutManager.VERTICAL, false);
+                            rvCardList.setLayoutManager(linearLayoutManager);
+                            rvCardList.setAdapter(foodAdapter);
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
 
-                        foodNames.setAdapter(itemsAdapter);
-
                     }
                 }, new Response.ErrorListener() {
-
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(BreakfastSearch.this, "Error", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(FoodSearch.this, "Error", Toast.LENGTH_SHORT).show();
                     }
                 });
 
                 queue.add(request);
             }
         });
+
+
 
     }
 }

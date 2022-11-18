@@ -33,7 +33,7 @@ public class BreakfastList extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(BreakfastList.this, BreakfastSearch.class);
+                Intent intent = new Intent(BreakfastList.this, FoodSearch.class);
                 startActivity(intent);
             }
         });
