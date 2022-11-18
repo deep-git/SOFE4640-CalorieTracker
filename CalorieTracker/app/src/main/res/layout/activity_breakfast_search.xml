@@ -49,7 +49,7 @@
         app:srcCompat="@drawable/search" />
 
     <EditText
-        android:id="@+id/search_food"
+        android:id="@+id/searchFood"
         android:layout_width="250dp"
         android:layout_height="40dp"
         android:layout_gravity="center_horizontal"
@@ -62,9 +62,31 @@
         android:inputType="text"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:textColor="#EDE7F6"
+        android:textColor="#0A3D62"
         app:layout_constraintEnd_toStartOf="@+id/search"
         app:layout_constraintStart_toEndOf="@+id/back"
         app:layout_constraintTop_toBottomOf="@+id/headerBar" />
+
+    <ScrollView
+        android:id="@+id/foodScrollView"
+        android:layout_width="409dp"
+        android:layout_height="599dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/search_food">
+
+        <LinearLayout
+            android:id="@+id/foodList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ListView
+                android:id="@+id/foodItem"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
