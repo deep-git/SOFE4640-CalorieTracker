@@ -1,6 +1,10 @@
 package com.example.calorietracker;
 
+import static android.content.ContentValues.TAG;
+
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
@@ -8,13 +12,23 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.firebase.firestore.core.View;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DisplayFoodAdapter extends RecyclerView.Adapter<DisplayFoodAdapter.MyViewHolder> {
     private BreakfastList activity;
     private List<foodDataModel> mList;
+    FirebaseFirestore fStore;
+    String userID;
+    String breakfastID;
+    String id;
+    foodRecyclerAdapter breakfastAdapter;
+    ArrayList<String> newBreakfastID = new ArrayList<String>();
 
     public DisplayFoodAdapter(BreakfastList activity, List<foodDataModel> mList) {
         this.activity = activity;
@@ -36,6 +50,28 @@ public class DisplayFoodAdapter extends RecyclerView.Adapter<DisplayFoodAdapter.
         holder.tvFatCal.setText("Fat: " + mList.get(position).getFat());
         holder.tvCarbsCal.setText("Carbs: " + mList.get(position).getCarbs());
         holder.tvBrandName.setText("Brand: " + mList.get(position).getBrandName());
+
+        fStore = FirebaseFirestore.getInstance();
+
+        holder.removeFood.setOnClickListener(new android.view.View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                breakfastID = breakfastAdapter.returnID(id);
+                fStore.collection("users").document(userID).collection("breakfast").document(breakfastID).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Log.d(TAG, "DocumentSnapshot successfully deleted!");
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.w(TAG, "Error deleting document", e);
+                            }
+                        });
+            }
+        });
     }
 
     @Override
