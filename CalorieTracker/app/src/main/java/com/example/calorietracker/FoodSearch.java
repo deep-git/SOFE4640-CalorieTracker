@@ -1,6 +1,5 @@
 package com.example.calorietracker;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -8,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -33,6 +31,7 @@ public class FoodSearch extends AppCompatActivity {
     ImageView search;
     EditText searchFood;
     RecyclerView rvCardList;
+    TextView dashboardTitle;
 
     private ArrayList<foodDataModel> foodArrayList = new ArrayList<>();
 
@@ -45,13 +44,19 @@ public class FoodSearch extends AppCompatActivity {
         search = findViewById(R.id.search);
         searchFood = findViewById(R.id.searchFood);
         rvCardList = findViewById(R.id.rvCardList);
+        dashboardTitle = findViewById(R.id.dashboardTitle);
 
         searchFood(""); //initialize
+        Intent intent = getIntent();
+        String checkMeal = intent.getStringExtra("meal");
+
+        dashboardTitle.setText("Search " + checkMeal);
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(FoodSearch.this, BreakfastList.class);
+                Intent intent = new Intent(FoodSearch.this, FoodList.class);
+                intent.putExtra("meal", checkMeal);
                 startActivity(intent);
             }
         });
@@ -101,7 +106,11 @@ public class FoodSearch extends AppCompatActivity {
 
                     foodArrayList.add(new foodDataModel(itemName,brandName,calories,fat,protein,carbs));
                 }
-                foodRecyclerAdapter foodAdapter = new foodRecyclerAdapter(FoodSearch.this, foodArrayList);
+
+                Intent intent = getIntent();
+                String checkMeal = intent.getStringExtra("meal");
+
+                foodSearchRecyclerAdapter foodAdapter = new foodSearchRecyclerAdapter(FoodSearch.this, foodArrayList, checkMeal);
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(FoodSearch.this, LinearLayoutManager.VERTICAL, false);
                 rvCardList.setLayoutManager(linearLayoutManager);
                 rvCardList.setAdapter(foodAdapter);

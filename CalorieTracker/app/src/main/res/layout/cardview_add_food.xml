@@ -80,7 +80,8 @@
             android:layout_marginTop="15dp"
             android:layout_marginRight="25dp"
             android:text="ADD"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            />
 
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

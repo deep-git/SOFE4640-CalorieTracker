@@ -3,7 +3,6 @@ package com.example.calorietracker;
 import static android.content.ContentValues.TAG;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,19 +22,20 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class DisplayFoodAdapter extends RecyclerView.Adapter<DisplayFoodAdapter.MyViewHolder> {
-    private BreakfastList activity;
+    private FoodList activity;
     private List<foodDataModel> mList;
+    private String checkMeal;
     FirebaseFirestore fStore;
     String userID;
     String breakfastID;
 
-    public DisplayFoodAdapter(BreakfastList activity, List<foodDataModel> mList) {
+    public DisplayFoodAdapter(FoodList activity, List<foodDataModel> mList, String checkMeal) {
         this.activity = activity;
         this.mList = mList;
+        this.checkMeal = checkMeal;
     }
 
     @NonNull
@@ -62,7 +62,7 @@ public class DisplayFoodAdapter extends RecyclerView.Adapter<DisplayFoodAdapter.
                 userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
                 fStore.collection("users")
                         .document(userID)
-                        .collection("breakfast")
+                        .collection(checkMeal)
                         .whereEqualTo("itemName",
                                 mList.get(position)
                                         .getItemName()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -73,7 +73,11 @@ public class DisplayFoodAdapter extends RecyclerView.Adapter<DisplayFoodAdapter.
                                 Log.d(TAG, document.getId() + " => " + document.getData());
                                 breakfastID = document.getId();
 
-                                fStore.collection("users").document(userID).collection("breakfast").document(breakfastID).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                fStore.collection("users")
+                                        .document(userID)
+                                        .collection(checkMeal)
+                                        .document(breakfastID)
+                                        .delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
                                             public void onSuccess(Void aVoid) {
                                                 Log.d(TAG, "DocumentSnapshot successfully deleted!");

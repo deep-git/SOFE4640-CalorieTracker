@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
@@ -26,23 +24,25 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class foodRecyclerAdapter extends RecyclerView.Adapter<foodRecyclerAdapter.Viewholder> {
+public class foodSearchRecyclerAdapter extends RecyclerView.Adapter<foodSearchRecyclerAdapter.Viewholder> {
 
     private final Context context;
     private final ArrayList<foodDataModel> foodModelArrayList;
+    private final String checkMeal;
     FirebaseAuth mAuth;
 
 //    -------------------------------------------------------------------------------------------
 
-    public foodRecyclerAdapter(Context context, ArrayList<foodDataModel> foodModelArrayList) {
+    public foodSearchRecyclerAdapter(Context context, ArrayList<foodDataModel> foodModelArrayList, String checkMeal) {
         this.context = context;
         this.foodModelArrayList = foodModelArrayList;
+        this.checkMeal = checkMeal;
     }
 
     @NonNull
     @Override
-    public foodRecyclerAdapter.Viewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cardview_food, parent, false);
+    public foodSearchRecyclerAdapter.Viewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cardview_add_food, parent, false);
         return new Viewholder(view);
     }
 
@@ -76,7 +76,7 @@ public class foodRecyclerAdapter extends RecyclerView.Adapter<foodRecyclerAdapte
 
 
     @Override
-    public void onBindViewHolder(@NonNull foodRecyclerAdapter.Viewholder holder, int position) {
+    public void onBindViewHolder(@NonNull foodSearchRecyclerAdapter.Viewholder holder, int position) {
         foodDataModel model = foodModelArrayList.get(position);
         holder.tvItemName.setText(model.getItemName());
         holder.tvCalories.setText("Calories: " + model.getCalories());
@@ -103,7 +103,7 @@ public class foodRecyclerAdapter extends RecyclerView.Adapter<foodRecyclerAdapte
                 mAuth = FirebaseAuth.getInstance();
                 userID = mAuth.getCurrentUser().getUid();
                 fdb.collection("users").document(userID)
-                        .collection("breakfast")
+                        .collection(checkMeal)
                         .add(food)
                         .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override

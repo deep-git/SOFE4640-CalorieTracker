@@ -17,7 +17,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -35,26 +34,34 @@ public class Home extends AppCompatActivity {
     ImageView profile;
     TextView calendarSelection;
     TextView date;
+
     LinearLayout breakfastAddBackground;
+    LinearLayout lunchAddBackground;
+    LinearLayout dinnerAddBackground;
+    LinearLayout snackAddBackground;
 
     FirebaseAuth mAuth;
     FirebaseFirestore fdb;
     String userID;
 
     private List<String> totalCals;
-    private List<String> breakfastCals;
+    private List<String> calories;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        home = (ImageView) findViewById(R.id.home);
-        progress = (ImageView) findViewById(R.id.progress);
-        profile = (ImageView) findViewById(R.id.profile);
-        calendarSelection = (TextView) findViewById(R.id.calendarSelection);
-        date = (TextView) findViewById(R.id.date);
-        breakfastAddBackground = (LinearLayout) findViewById(R.id.breakfastAddBackground);
+        home = findViewById(R.id.home);
+        progress = findViewById(R.id.progress);
+        profile = findViewById(R.id.profile);
+        calendarSelection = findViewById(R.id.calendarSelection);
+        date = findViewById(R.id.date);
+
+        breakfastAddBackground = findViewById(R.id.breakfastAddBackground);
+        lunchAddBackground = findViewById(R.id.lunchAddBackground);
+        dinnerAddBackground = findViewById(R.id.dinnerAddBackground);
+        snackAddBackground = findViewById(R.id.snackAddBackground);
 
         Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
         calendar.clear();
@@ -96,14 +103,43 @@ public class Home extends AppCompatActivity {
             }
         });
 
+//  --------------------------------------------------------------------------------------------------
+
         breakfastAddBackground.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Home.this, BreakfastList.class);
+                Intent intent = new Intent(Home.this, FoodList.class);
+                intent.putExtra("meal", "Breakfast");
                 startActivity(intent);
             }
         });
 
+        lunchAddBackground.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Home.this, FoodList.class);
+                intent.putExtra("meal", "Lunch");
+                startActivity(intent);
+            }
+        });
+
+        dinnerAddBackground.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Home.this, FoodList.class);
+                intent.putExtra("meal", "Dinner");
+                startActivity(intent);
+            }
+        });
+
+        snackAddBackground.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Home.this, FoodList.class);
+                intent.putExtra("meal", "Snack");
+                startActivity(intent);
+            }
+        });
 
 //  --------------------------------------------------------------------------------------------------
 
@@ -112,41 +148,62 @@ public class Home extends AppCompatActivity {
         userID = mAuth.getCurrentUser().getUid();
 
         totalCals = new ArrayList<String>();
-        breakfastCals = new ArrayList<String>();
+        calories = new ArrayList<String>();
 
         //getTotalCals();
-        getBreakfastCal();
+        getCalories("Breakfast");
+        getCalories("Lunch");
+        getCalories("Dinner");
+        getCalories("Snack");
 
     }
 
-    public void getBreakfastCal(){
+    public void getCalories(String checkMeal){
         fdb.collection("users")
                 .document(userID)
-                .collection("breakfast")
+                .collection(checkMeal)
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         DecimalFormat df = new DecimalFormat();
                         df.setMaximumFractionDigits(2);
 
-                        breakfastCals.clear();
+                        calories.clear();
 
                         for (DocumentSnapshot snapshot : task.getResult()) {
                             String cal = snapshot.getString("calories");
-                            breakfastCals.add(cal);
+                            calories.add(cal);
                             totalCals.add(cal);
                         }
 
-                        float sumBreakfastCal = 0;
-                        for (String number : breakfastCals) {
+                        float sumCal = 0;
+                        for (String number : calories) {
                             float n = Float.parseFloat(number);
-                            sumBreakfastCal += n;
+                            sumCal += n;
                         }
 
 //                        Toast.makeText(Home.this, "" + totalCals, Toast.LENGTH_SHORT).show();
 
-                        TextView breakfastCalories = findViewById(R.id.breakfastCalories);
-                        breakfastCalories.setText("" + (df.format(sumBreakfastCal)) + " Cal");
+                        switch (checkMeal){
+                            case "Breakfast":
+                                TextView breakfastCalories = findViewById(R.id.breakfastCalories);
+                                breakfastCalories.setText("" + (df.format(sumCal)) + " Cal");
+                                break;
+                            case "Lunch":
+                                TextView lunchCalories = findViewById(R.id.lunchCalories);
+                                lunchCalories.setText("" + (df.format(sumCal)) + " Cal");
+                                break;
+                            case "Dinner":
+                                TextView dinnerCalories = findViewById(R.id.dinnerCalories);
+                                dinnerCalories.setText("" + (df.format(sumCal)) + " Cal");
+                                break;
+                            case "Snack":
+                                TextView snackCalories = findViewById(R.id.snackCalories);
+                                snackCalories.setText("" + (df.format(sumCal)) + " Cal");
+                                break;
+                            default:
+                                throw new IllegalArgumentException("Invalid Meal" + checkMeal);
+                        }
 
                         getTotalCals();
                     }
