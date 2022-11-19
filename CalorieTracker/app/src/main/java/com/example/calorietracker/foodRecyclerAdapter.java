@@ -31,18 +31,12 @@ public class foodRecyclerAdapter extends RecyclerView.Adapter<foodRecyclerAdapte
     private final Context context;
     private final ArrayList<foodDataModel> foodModelArrayList;
     FirebaseAuth mAuth;
-    String id;
-    ArrayList<String> breakfastIDArray = new ArrayList<String>();
 
 //    -------------------------------------------------------------------------------------------
 
     public foodRecyclerAdapter(Context context, ArrayList<foodDataModel> foodModelArrayList) {
         this.context = context;
         this.foodModelArrayList = foodModelArrayList;
-    }
-
-    public String returnID(String id) {
-        return this.id = id;
     }
 
     @NonNull
@@ -102,6 +96,7 @@ public class foodRecyclerAdapter extends RecyclerView.Adapter<foodRecyclerAdapte
                 food.put("fat", model.getFat());
                 food.put("carbs", model.getCarbs());
                 food.put("protein", model.getProtein());
+                food.put("id", true);
                 String userID;
 
                 FirebaseFirestore fdb = FirebaseFirestore.getInstance();
@@ -115,7 +110,6 @@ public class foodRecyclerAdapter extends RecyclerView.Adapter<foodRecyclerAdapte
                     public void onSuccess(DocumentReference documentReference) {
                         Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
                         String id = documentReference.getId();
-                        returnID(id);
                         documentReference.set(food);
                     }
                 }).addOnFailureListener(new OnFailureListener() {

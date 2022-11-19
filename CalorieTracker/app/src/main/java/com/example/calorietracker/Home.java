@@ -41,7 +41,7 @@ public class Home extends AppCompatActivity {
     FirebaseFirestore fdb;
     String userID;
 
-    private List<Float> totalCals;
+    private List<String> totalCals;
     private List<String> breafastCals;
 
     @Override
@@ -111,10 +111,10 @@ public class Home extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         userID = mAuth.getCurrentUser().getUid();
 
-        totalCals = new ArrayList<Float>();
+        totalCals = new ArrayList<String>();
         breafastCals = new ArrayList<String>();
 
-        getTotalCals();
+        //getTotalCals();
         getBreakfastCal();
 
     }
@@ -134,21 +134,22 @@ public class Home extends AppCompatActivity {
                         for (DocumentSnapshot snapshot : task.getResult()) {
                             String cal = snapshot.getString("calories");
                             breafastCals.add(cal);
+                            totalCals.add(cal);
                         }
 
-                        float sumCal = 0;
+                        float sumBreakfastCal = 0;
                         for (String number : breafastCals) {
                             float n = Float.parseFloat(number);
-                            sumCal += n;
+                            sumBreakfastCal += n;
                         }
+
 
                         Toast.makeText(Home.this, "" + totalCals, Toast.LENGTH_SHORT).show();
 
                         TextView breakfastCalories = findViewById(R.id.breakfastCalories);
-                        breakfastCalories.setText("" + (df.format(sumCal)) + " Cal");
+                        breakfastCalories.setText("" + (df.format(sumBreakfastCal)) + " Cal");
 
-                        totalCals.add(sumCal);
-
+                        getTotalCals();
                     }
 
                 }).addOnFailureListener(new OnFailureListener() {
@@ -165,15 +166,15 @@ public class Home extends AppCompatActivity {
         DecimalFormat df = new DecimalFormat();
         df.setMaximumFractionDigits(2);
 
-        float sumCal = 0;
-        for (float number : totalCals) {
-            float n = number;
-            sumCal += n;
+        float sumTotalCal = 0;
+        for (String number : totalCals) {
+            float n = Float.parseFloat(number);
+            sumTotalCal += n;
         }
-        Toast.makeText(Home.this, "" + sumCal, Toast.LENGTH_SHORT).show();
+        Toast.makeText(Home.this, "" + sumTotalCal, Toast.LENGTH_SHORT).show();
 
         TextView totalCalorie = findViewById(R.id.totalCalorie);
-        totalCalorie.setText("" + (df.format(sumCal)) + " Cal");
+        totalCalorie.setText("" + (df.format(sumTotalCal)) + " Cal");
     }
 
 }

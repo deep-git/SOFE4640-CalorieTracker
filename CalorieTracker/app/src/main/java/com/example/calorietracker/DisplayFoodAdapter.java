@@ -2,6 +2,7 @@ package com.example.calorietracker;
 
 import static android.content.ContentValues.TAG;
 
+import android.annotation.SuppressLint;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,10 +13,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,9 +31,6 @@ public class DisplayFoodAdapter extends RecyclerView.Adapter<DisplayFoodAdapter.
     FirebaseFirestore fStore;
     String userID;
     String breakfastID;
-    String id;
-    foodRecyclerAdapter breakfastAdapter;
-    ArrayList<String> newBreakfastID = new ArrayList<String>();
 
     public DisplayFoodAdapter(BreakfastList activity, List<foodDataModel> mList) {
         this.activity = activity;
@@ -43,13 +45,14 @@ public class DisplayFoodAdapter extends RecyclerView.Adapter<DisplayFoodAdapter.
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MyViewHolder holder, @SuppressLint("RecyclerView") int position) {
         holder.tvItemName.setText(mList.get(position).getItemName());
         holder.tvCalories.setText("Calories: " + mList.get(position).getCalories());
         holder.tvProteinCal.setText("Protein: " + mList.get(position).getProtein());
         holder.tvFatCal.setText("Fat: " + mList.get(position).getFat());
         holder.tvCarbsCal.setText("Carbs: " + mList.get(position).getCarbs());
         holder.tvBrandName.setText("Brand: " + mList.get(position).getBrandName());
+        String id = " ";
 
         fStore = FirebaseFirestore.getInstance();
 
@@ -57,19 +60,32 @@ public class DisplayFoodAdapter extends RecyclerView.Adapter<DisplayFoodAdapter.
             @Override
             public void onClick(View view) {
                 userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                breakfastID = breakfastAdapter.returnID(id);
-                fStore.collection("users").document(userID).collection("breakfast").document(breakfastID).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                Log.d(TAG, "DocumentSnapshot successfully deleted!");
+                fStore.collection("users").document(userID).collection("breakfast").whereEqualTo("itemName", mList.get(position).getItemName()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d(TAG, document.getId() + " => " + document.getData());
+                                breakfastID = document.getId();
+
+                                fStore.collection("users").document(userID).collection("breakfast").document(breakfastID).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                Log.d(TAG, "DocumentSnapshot successfully deleted!");
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Log.w(TAG, "Error deleting document", e);
+                                            }
+                                });
                             }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Log.w(TAG, "Error deleting document", e);
-                            }
-                        });
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
             }
         });
     }
