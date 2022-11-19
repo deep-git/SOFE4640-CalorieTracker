@@ -88,7 +88,6 @@ public class FoodList extends AppCompatActivity {
             default:
                 throw new IllegalArgumentException("Invalid Meal" + checkMeal);
         }
-
     }
 
     private void showData(String meal) {
