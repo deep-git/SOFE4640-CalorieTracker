@@ -50,16 +50,15 @@
         app:layout_constraintTop_toBottomOf="@+id/headerBar"
         app:srcCompat="@drawable/search" />
 
-    <LinearLayout
-        android:id="@+id/dashboardBackground"
-        android:layout_width="415dp"
-        android:layout_height="600dp"
-        android:layout_marginTop="11dp"
-        android:background="@drawable/dashboard_background"
-        android:orientation="vertical"
+    <ListView
+        android:id="@+id/displayBreakfast"
+        android:layout_width="409dp"
+        android:layout_height="609dp"
+        android:layout_marginTop="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/back"></LinearLayout>
+        app:layout_constraintTop_toBottomOf="@+id/back" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
