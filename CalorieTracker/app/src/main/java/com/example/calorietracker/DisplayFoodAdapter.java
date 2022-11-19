@@ -38,6 +38,9 @@ public class DisplayFoodAdapter extends RecyclerView.Adapter<DisplayFoodAdapter.
         this.checkMeal = checkMeal;
     }
 
+    public DisplayFoodAdapter(BreakfastList breakfastList, List<foodDataModel> list) {
+    }
+
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

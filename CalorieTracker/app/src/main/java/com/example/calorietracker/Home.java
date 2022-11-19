@@ -1,10 +1,13 @@
 package com.example.calorietracker;
 
+import static android.content.ContentValues.TAG;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -13,10 +16,12 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -24,7 +29,9 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.TimeZone;
 
 public class Home extends AppCompatActivity {
@@ -46,6 +53,7 @@ public class Home extends AppCompatActivity {
 
     private List<String> totalCals;
     private List<String> calories;
+    ArrayList<String> daysAlreadySelected = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +92,38 @@ public class Home extends AppCompatActivity {
             @Override
             public void onPositiveButtonClick(Long selection) {
                 date.setText(materialDatePicker.getHeaderText());
+                daysAlreadySelected.add(materialDatePicker.getHeaderText());
+
+                for (int i = 0; i < daysAlreadySelected.size(); i++) {
+                    if (daysAlreadySelected.get(i).equals(materialDatePicker.getHeaderText())) {
+                        String daySelection = materialDatePicker.getHeaderText();
+                        Map<String, Object> calendarDay = new HashMap<>();
+                        calendarDay.put("date", daySelection);
+                        calendarDay.put("id", true);
+                        String userID;
+
+                        FirebaseFirestore fdb = FirebaseFirestore.getInstance();
+                        mAuth = FirebaseAuth.getInstance();
+                        userID = mAuth.getCurrentUser().getUid();
+                        fdb.collection("users").document(userID)
+                                .collection("calendar")
+                                .add(calendarDay)
+                                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                    @Override
+                                    public void onSuccess(DocumentReference documentReference) {
+                                        Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+                                        String id = documentReference.getId();
+                                        documentReference.set(calendarDay);
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.w(TAG, "Error adding document", e);
+
+                                    }
+                                });
+                    }
+                }
             }
         });
 
