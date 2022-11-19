@@ -70,10 +70,59 @@ public class Register extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
+        if (mAuth.getCurrentUser() != null) {
+            startActivity(new Intent(getApplicationContext(), Home.class));
+            finish();
+        }
+
         signUp.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
+                String username = enterUsername.getText().toString();
+                String email = enterEmail.getText().toString().trim();
+                String password = enterPassword.getText().toString().trim();
+
+                if (TextUtils.isEmpty(username)) {
+                    enterUsername.setError("Username is required.");
+                    return;
+                }
+
+                if (TextUtils.isEmpty(email)) {
+                    enterEmail.setError("Email is required.");
+                    return;
+                }
+
+                if (TextUtils.isEmpty(password)) {
+                    enterPassword.setError("Password is required");
+                    return;
+                }
+
+                mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            userID = mAuth.getCurrentUser().getUid();
+                            DocumentReference documentReference = fStore.collection("users").document(userID);
+                            Map<String,Object> user = new HashMap<>();
+                            user.put("username", username);
+                            user.put("email", email);
+                            documentReference.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void unused) {
+                                    Log.d("TAG","User profile is created for " + userID);
+                                }
+                            });
+
+                            Toast.makeText(Register.this, "User created.", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(getApplicationContext(), Home.class));
+                        } else {
+                            Toast.makeText(Register.this, "Error: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+                /*
                 String username = enterUsername.getText().toString();
                 String email = enterEmail.getText().toString();
                 String password = enterPassword.getText().toString();
@@ -105,6 +154,8 @@ public class Register extends AppCompatActivity {
                 } else {
                     Toast.makeText(Register.this, "Error Occurred!", Toast.LENGTH_SHORT).show();
                 }
+
+                 */
             }
         });
     }

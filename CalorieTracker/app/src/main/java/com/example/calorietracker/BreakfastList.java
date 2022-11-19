@@ -20,6 +20,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -53,10 +54,10 @@ public class BreakfastList extends AppCompatActivity {
         displayBreakfast = findViewById(R.id.displayBreakfast);
         mAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
-        userID = mAuth.getCurrentUser().getUid();
-        breakfastID = fStore.collection("users").document(userID).collection("breakfast").getId();
+        //String userID = mAuth.getCurrentUser().getUid();
+        //breakfastID = fStore.collection("users").document(userID).collection("breakfast").getId();
 
-        itemsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, foodArrayList);
+        //itemsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, foodArrayList);
 
         back.setOnClickListener(new View.OnClickListener() {
 
@@ -84,6 +85,7 @@ public class BreakfastList extends AppCompatActivity {
          */
     }
 
+    /*
     private void getListItems() {
         fStore.collection("users").document(userID).collection("breakfast").document(breakfastID).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
@@ -100,4 +102,5 @@ public class BreakfastList extends AppCompatActivity {
             }
         });
     }
+     */
 }

@@ -66,6 +66,33 @@ public class Login extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
+
+                String email = enterEmail.getText().toString().trim();
+                String password = enterPassword.getText().toString().trim();
+
+                if (TextUtils.isEmpty(email)) {
+                    enterEmail.setError("Email is required.");
+                    return;
+                }
+
+                if (TextUtils.isEmpty(password)) {
+                    enterPassword.setError("Password is required");
+                    return;
+                }
+
+                mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(Login.this, "Logged in Successfully.", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(getApplicationContext(), Home.class));
+                        } else {
+                            Toast.makeText(Login.this, "Error: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+                /*
                 String email = enterEmail.getText().toString();
                 String password = enterPassword.getText().toString();
 
@@ -86,6 +113,7 @@ public class Login extends AppCompatActivity {
                 } else {
                     Toast.makeText(Login.this, "Error Occurred!", Toast.LENGTH_SHORT).show();
                 }
+                 */
             }
         });
 
