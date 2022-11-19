@@ -75,12 +75,13 @@
         <Button
             android:id="@+id/addFood"
             android:layout_width="wrap_content"
-            android:layout_height="90dp"
+            android:layout_height="75dp"
             android:layout_alignParentRight="true"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="25dp"
             android:layout_marginRight="25dp"
             android:text="ADD"
             android:textColor="@color/white"
+            android:background="@color/add_btn"
             />
 
     </RelativeLayout>
