@@ -3,6 +3,7 @@ package com.example.calorietracker;
 import static android.content.ContentValues.TAG;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -53,14 +54,18 @@ public class DisplayFoodAdapter extends RecyclerView.Adapter<DisplayFoodAdapter.
         holder.tvCarbsCal.setText("Carbs: " + mList.get(position).getCarbs());
         holder.tvBrandName.setText("Brand: " + mList.get(position).getBrandName());
         String id = " ";
-
         fStore = FirebaseFirestore.getInstance();
 
         holder.removeFood.setOnClickListener(new android.view.View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                fStore.collection("users").document(userID).collection("breakfast").whereEqualTo("itemName", mList.get(position).getItemName()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                fStore.collection("users")
+                        .document(userID)
+                        .collection("breakfast")
+                        .whereEqualTo("itemName",
+                                mList.get(position)
+                                        .getItemName()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
@@ -86,6 +91,7 @@ public class DisplayFoodAdapter extends RecyclerView.Adapter<DisplayFoodAdapter.
                         }
                     }
                 });
+
             }
         });
     }
