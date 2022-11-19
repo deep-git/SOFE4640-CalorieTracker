@@ -81,6 +81,7 @@
             android:layout_marginRight="25dp"
             android:text="REMOVE"
             android:textColor="@color/white"
+            app:backgroundTint="@null"
             android:background="@color/remove_btn"
             />
 

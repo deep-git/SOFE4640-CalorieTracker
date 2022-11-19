@@ -10,7 +10,7 @@
     <LinearLayout
         android:id="@+id/registerBackground"
         android:layout_width="412dp"
-        android:layout_height="600dp"
+        android:layout_height="611dp"
         android:background="@drawable/register_background"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -39,27 +39,58 @@
             android:textColor="@color/white"
             android:textSize="16dp" />
 
-        <TextView
-            android:id="@+id/usernameText"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/usernameLine"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"
             android:layout_marginTop="30dp"
-            android:layout_marginLeft="45dp"
-            android:fontFamily="@font/roboto"
-            android:text="Username"
-            android:textColor="@color/white"
-            android:textSize="16dp" />
+            android:layout_marginLeft="45dp">
 
-        <TextView
-            android:id="@+id/emailText"
-            android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/usernameText"
+                android:layout_width="95dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto"
+                android:text="Username"
+                android:textColor="@color/white"
+                android:textSize="16dp" />
+            <TextView
+                android:id="@+id/username"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto"
+                android:text="username"
+                android:textColor="@color/white"
+                android:textSize="16dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/emailLine"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"
             android:layout_marginTop="20dp"
-            android:layout_marginLeft="45dp"
-            android:fontFamily="@font/roboto"
-            android:text="Email"
-            android:textColor="@color/white"
-            android:textSize="16dp" />
+            android:layout_marginLeft="45dp">
+
+            <TextView
+                android:id="@+id/emailText"
+                android:layout_width="95dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto"
+                android:text="Email"
+                android:textColor="@color/white"
+                android:textSize="16dp" />
+            <TextView
+                android:id="@+id/email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto"
+                android:text="email"
+                android:textColor="@color/white"
+                android:textSize="16dp" />
+        </LinearLayout>
+
 
         <TextView
             android:id="@+id/statistics"
@@ -72,36 +103,87 @@
             android:textColor="@color/white"
             android:textSize="16dp" />
 
-        <TextView
-            android:id="@+id/ageeText"
-            android:layout_width="wrap_content"
+
+        <LinearLayout
+            android:id="@+id/ageLine"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:layout_marginLeft="45dp"
-            android:fontFamily="@font/roboto"
-            android:text="Age"
-            android:textColor="@color/white"
-            android:textSize="16dp" />
-        <TextView
-            android:id="@+id/weightText"
-            android:layout_width="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="45dp">
+
+            <TextView
+                android:id="@+id/ageText"
+                android:layout_width="85dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto"
+                android:text="Age"
+                android:textColor="@color/white"
+                android:textSize="16dp" />
+            <EditText
+                android:id="@+id/age"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto"
+                android:textAlignment="center"
+                android:text="age"
+                android:textColor="@color/white"
+                android:textSize="16dp" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/weightLine"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:layout_marginLeft="45dp"
-            android:fontFamily="@font/roboto"
-            android:text="Weight"
-            android:textColor="@color/white"
-            android:textSize="16dp" />
-        <TextView
-            android:id="@+id/heightText"
-            android:layout_width="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="45dp">
+            <TextView
+                android:id="@+id/weightText"
+                android:layout_width="85dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto"
+                android:text="Weight"
+                android:textColor="@color/white"
+                android:textSize="16dp" />
+            <EditText
+                android:id="@+id/weight"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto"
+                android:textAlignment="center"
+                android:text="weight"
+                android:textColor="@color/white"
+                android:textSize="16dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/heightLine"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:layout_marginLeft="45dp"
-            android:fontFamily="@font/roboto"
-            android:text="Height"
-            android:textColor="@color/white"
-            android:textSize="16dp" />
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="45dp">
+            <TextView
+                android:id="@+id/heightText"
+                android:layout_width="85dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto"
+                android:text="Height"
+                android:textColor="@color/white"
+                android:textSize="16dp" />
+            <EditText
+                android:id="@+id/height"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto"
+                android:textAlignment="center"
+                android:text="height"
+                android:textColor="@color/white"
+                android:textSize="16dp" />
+        </LinearLayout>
+
 
         <TextView
             android:id="@+id/logout"
