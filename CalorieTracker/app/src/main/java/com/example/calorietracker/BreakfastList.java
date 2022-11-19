@@ -84,12 +84,20 @@ public class BreakfastList extends AppCompatActivity {
 
     private void showData() {
         userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        fStore.collection("users").document(userID).collection("breakfast").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        fStore.collection("users")
+                .document(userID)
+                .collection("breakfast")
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 for (DocumentSnapshot snapshot : task.getResult()) {
-                        foodDataModel foodData = new foodDataModel(snapshot.getString("itemName"), snapshot.getString("brandName"), snapshot.getString("calories"),
-                                snapshot.getString("fat"), snapshot.getString("protein"), snapshot.getString("carbs"));
+                        foodDataModel foodData = new foodDataModel(
+                                snapshot.getString("itemName"),
+                                snapshot.getString("brandName"),
+                                snapshot.getString("calories"),
+                                snapshot.getString("fat"),
+                                snapshot.getString("protein"),
+                                snapshot.getString("carbs"));
                         list.add(foodData);
                 }
                 displayFoodAdapter.notifyDataSetChanged();

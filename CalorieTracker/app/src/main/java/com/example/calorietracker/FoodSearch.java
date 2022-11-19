@@ -46,7 +46,7 @@ public class FoodSearch extends AppCompatActivity {
         searchFood = findViewById(R.id.searchFood);
         rvCardList = findViewById(R.id.rvCardList);
 
-
+        searchFood(""); //initialize
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,62 +59,65 @@ public class FoodSearch extends AppCompatActivity {
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Instantiate the RequestQueue.
-                rvCardList = findViewById(R.id.rvCardList);
-
-                foodArrayList.clear();
-
-                RequestQueue queue = Volley.newRequestQueue(FoodSearch.this);
                 String input = searchFood.getText().toString();
-                String url = "https://api.nutritionix.com/v1_1/search/" + input
-                        + "?results=0%3A20&cal_min=0&cal_max=50000&"
-                        + "fields=item_name%2C"
-                        + "item_id%2C"
-                        + "brand_name%2C"
-                        + "brand_id%2C"
-                        + "nf_protein%2C"
-                        + "nf_calories%2C"
-                        + "nf_total_carbohydrate%2C"
-                        + "nf_total_fat&"
-                        + "appId=[93cd396f]&"
-                        + "appKey=[be3ca651707918c2a2839fc6460e4056—]";
-
-                JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, response -> {
-                    try {
-                        JSONArray hitArray = response.getJSONArray("hits");
-
-                        for (int i = 0; i < hitArray.length(); i++) {
-                            JSONObject foodDetails = hitArray.getJSONObject(i);
-                            JSONObject fields = foodDetails.getJSONObject("fields");
-
-                            String itemName = fields.getString("item_name");
-                            String brandName = fields.getString("brand_name");
-                            String calories = fields.getString("nf_calories");
-                            String fat = fields.getString("nf_total_fat");
-                            String protein = fields.getString("nf_protein");
-                            String carbs = fields.getString("nf_total_carbohydrate");
-
-                            foodArrayList.add(new foodDataModel(itemName,brandName,calories,fat,protein,carbs));
-                        }
-                        foodRecyclerAdapter foodAdapter = new foodRecyclerAdapter(FoodSearch.this, foodArrayList);
-                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(FoodSearch.this, LinearLayoutManager.VERTICAL, false);
-                        rvCardList.setLayoutManager(linearLayoutManager);
-                        rvCardList.setAdapter(foodAdapter);
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(FoodSearch.this, "Error", Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-                queue.add(request);
+                searchFood(input);
             }
         });
+    }
+
+    public void searchFood(String input){
+        // Instantiate the RequestQueue.
+        rvCardList = findViewById(R.id.rvCardList);
+        foodArrayList.clear();
+        RequestQueue queue = Volley.newRequestQueue(FoodSearch.this);
+
+        String url = "https://api.nutritionix.com/v1_1/search/" + input
+                + "?results=0%3A20&cal_min=0&cal_max=50000&"
+                + "fields=item_name%2C"
+                + "item_id%2C"
+                + "brand_name%2C"
+                + "brand_id%2C"
+                + "nf_protein%2C"
+                + "nf_calories%2C"
+                + "nf_total_carbohydrate%2C"
+                + "nf_total_fat&"
+                + "appId=[93cd396f]&"
+                + "appKey=[be3ca651707918c2a2839fc6460e4056—]";
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, response -> {
+            try {
+                JSONArray hitArray = response.getJSONArray("hits");
+
+                for (int i = 0; i < hitArray.length(); i++) {
+                    JSONObject foodDetails = hitArray.getJSONObject(i);
+                    JSONObject fields = foodDetails.getJSONObject("fields");
+
+                    String itemName = fields.getString("item_name");
+                    String brandName = fields.getString("brand_name");
+                    String calories = fields.getString("nf_calories");
+                    String fat = fields.getString("nf_total_fat");
+                    String protein = fields.getString("nf_protein");
+                    String carbs = fields.getString("nf_total_carbohydrate");
+
+                    foodArrayList.add(new foodDataModel(itemName,brandName,calories,fat,protein,carbs));
+                }
+                foodRecyclerAdapter foodAdapter = new foodRecyclerAdapter(FoodSearch.this, foodArrayList);
+                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(FoodSearch.this, LinearLayoutManager.VERTICAL, false);
+                rvCardList.setLayoutManager(linearLayoutManager);
+                rvCardList.setAdapter(foodAdapter);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(FoodSearch.this, "Error", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        queue.add(request);
     }
 
 }

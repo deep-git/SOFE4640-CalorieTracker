@@ -1,5 +1,6 @@
 package com.example.calorietracker;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -8,11 +9,23 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.TimeZone;
 
 public class Home extends AppCompatActivity {
@@ -23,6 +36,13 @@ public class Home extends AppCompatActivity {
     TextView calendarSelection;
     TextView date;
     LinearLayout breakfastAddBackground;
+
+    FirebaseAuth mAuth;
+    FirebaseFirestore fdb;
+    String userID;
+
+    private List<Float> totalCals;
+    private List<String> breafastCals;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +67,6 @@ public class Home extends AppCompatActivity {
         MaterialDatePicker<Long> materialDatePicker = builder.build();
 
         calendarSelection.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View view) {
                 materialDatePicker.show(getSupportFragmentManager(), "DATE_PICKER");
@@ -55,7 +74,6 @@ public class Home extends AppCompatActivity {
         });
 
         materialDatePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener<Long>() {
-
             @Override
             public void onPositiveButtonClick(Long selection) {
                 date.setText(materialDatePicker.getHeaderText());
@@ -63,7 +81,6 @@ public class Home extends AppCompatActivity {
         });
 
         home.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Home.this, Home.class);
@@ -72,7 +89,6 @@ public class Home extends AppCompatActivity {
         });
 
         profile.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Home.this, Profile.class);
@@ -87,5 +103,77 @@ public class Home extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+
+//  --------------------------------------------------------------------------------------------------
+
+        fdb = FirebaseFirestore.getInstance();
+        mAuth = FirebaseAuth.getInstance();
+        userID = mAuth.getCurrentUser().getUid();
+
+        totalCals = new ArrayList<Float>();
+        breafastCals = new ArrayList<String>();
+
+        getTotalCals();
+        getBreakfastCal();
+
     }
+
+    public void getBreakfastCal(){
+        fdb.collection("users")
+                .document(userID)
+                .collection("breakfast")
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        DecimalFormat df = new DecimalFormat();
+                        df.setMaximumFractionDigits(2);
+
+                        breafastCals.clear();
+
+                        for (DocumentSnapshot snapshot : task.getResult()) {
+                            String cal = snapshot.getString("calories");
+                            breafastCals.add(cal);
+                        }
+
+                        float sumCal = 0;
+                        for (String number : breafastCals) {
+                            float n = Float.parseFloat(number);
+                            sumCal += n;
+                        }
+
+                        Toast.makeText(Home.this, "" + totalCals, Toast.LENGTH_SHORT).show();
+
+                        TextView breakfastCalories = findViewById(R.id.breakfastCalories);
+                        breakfastCalories.setText("" + (df.format(sumCal)) + " Cal");
+
+                        totalCals.add(sumCal);
+
+                    }
+
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(Home.this, "Error", Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+
+    }
+
+    public void getTotalCals(){
+        DecimalFormat df = new DecimalFormat();
+        df.setMaximumFractionDigits(2);
+
+        float sumCal = 0;
+        for (float number : totalCals) {
+            float n = number;
+            sumCal += n;
+        }
+        Toast.makeText(Home.this, "" + sumCal, Toast.LENGTH_SHORT).show();
+
+        TextView totalCalorie = findViewById(R.id.totalCalorie);
+        totalCalorie.setText("" + (df.format(sumCal)) + " Cal");
+    }
+
 }
