@@ -17,6 +17,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -40,9 +41,9 @@ public class BreakfastList extends AppCompatActivity {
     FirebaseFirestore fStore;
     String userID;
     String breakfastID;
-    ListView displayBreakfast;
-    ArrayList foodArrayList = new ArrayList<>();
-    private ArrayAdapter<String> itemsAdapter;
+    RecyclerView rvDisplayBreakfast;
+    private DisplayFoodAdapter displayFoodAdapter;
+    private List<foodDataModel> list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,13 +52,16 @@ public class BreakfastList extends AppCompatActivity {
 
         back = findViewById(R.id.back);
         search = findViewById(R.id.search);
-        displayBreakfast = findViewById(R.id.displayBreakfast);
-        mAuth = FirebaseAuth.getInstance();
-        fStore = FirebaseFirestore.getInstance();
-        //String userID = mAuth.getCurrentUser().getUid();
-        //breakfastID = fStore.collection("users").document(userID).collection("breakfast").getId();
+        rvDisplayBreakfast = findViewById(R.id.rvDisplayBreakfast);
+        rvDisplayBreakfast.setHasFixedSize(true);
+        rvDisplayBreakfast.setLayoutManager(new LinearLayoutManager(this));
 
-        //itemsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, foodArrayList);
+        fStore = FirebaseFirestore.getInstance();
+        list = new ArrayList<>();
+        displayFoodAdapter = new DisplayFoodAdapter(this, list);
+        rvDisplayBreakfast.setAdapter(displayFoodAdapter);
+
+        showData();
 
         back.setOnClickListener(new View.OnClickListener() {
 
@@ -76,31 +80,26 @@ public class BreakfastList extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-        /*
-        if (foodArrayList != null) {
-            getListItems();
-            displayBreakfast.setAdapter(itemsAdapter);
-        }
-         */
     }
 
-    /*
-    private void getListItems() {
-        fStore.collection("users").document(userID).collection("breakfast").document(breakfastID).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+    private void showData() {
+        userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        fStore.collection("users").document(userID).collection("breakfast").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                String itemName = Objects.requireNonNull(documentSnapshot.get("item_name")).toString();
-                String brandName = documentSnapshot.get("brand_name").toString();
-                String calories = documentSnapshot.get("nf_calories").toString();
-                String fat = documentSnapshot.get("nf_total_fat").toString();
-                String protein = documentSnapshot.get("nf_protein").toString();
-                String carbs = documentSnapshot.get("nf_total_carbohydrate").toString();
-
-                foodArrayList.add(itemName);
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                for (DocumentSnapshot snapshot : task.getResult()) {
+                        foodDataModel foodData = new foodDataModel(snapshot.getString("itemName"), snapshot.getString("brandName"), snapshot.getString("calories"),
+                                snapshot.getString("fat"), snapshot.getString("protein"), snapshot.getString("carbs"));
+                        list.add(foodData);
+                }
+                displayFoodAdapter.notifyDataSetChanged();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(BreakfastList.this, "Error", Toast.LENGTH_SHORT).show();
 
             }
         });
     }
-     */
 }

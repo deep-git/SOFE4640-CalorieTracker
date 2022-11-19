@@ -89,10 +89,10 @@ public class FoodSearch extends AppCompatActivity {
 
                             String itemName = fields.getString("item_name");
                             String brandName = fields.getString("brand_name");
-                            float calories = Float.parseFloat(fields.getString("nf_calories"));
-                            float fat = Float.parseFloat(fields.getString("nf_total_fat"));
-                            float protein = Float.parseFloat(fields.getString("nf_protein"));
-                            float carbs = Float.parseFloat(fields.getString("nf_total_carbohydrate"));
+                            String calories = fields.getString("nf_calories");
+                            String fat = fields.getString("nf_total_fat");
+                            String protein = fields.getString("nf_protein");
+                            String carbs = fields.getString("nf_total_carbohydrate");
 
                             foodArrayList.add(new foodDataModel(itemName,brandName,calories,fat,protein,carbs));
                         }

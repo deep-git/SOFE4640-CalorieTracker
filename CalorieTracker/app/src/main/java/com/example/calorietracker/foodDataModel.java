@@ -4,12 +4,12 @@ public class foodDataModel {
 
     String itemName;
     String brandName;
-    float calories;
-    float fat;
-    float protein;
-    float carbs;
+    String calories;
+    String fat;
+    String protein;
+    String carbs;
 
-    public foodDataModel(String itemName, String brandName, float calories, float fat, float protein, float carbs) {
+    public foodDataModel(String itemName, String brandName, String calories, String fat, String protein, String carbs) {
         this.itemName = itemName;
         this.brandName = brandName;
         this.calories = calories;
@@ -32,31 +32,31 @@ public class foodDataModel {
         this.brandName = brandName;
     }
 
-    public float getCalories() {
+    public String getCalories() {
         return calories;
     }
-    public void setCalories(float calories) {
+    public void setCalories(String calories) {
         this.calories = calories;
     }
 
-    public float getFat() {
+    public String getFat() {
         return fat;
     }
-    public void setFat(float fat) {
+    public void setFat(String fat) {
         this.fat = fat;
     }
 
-    public float getProtein() {
+    public String getProtein() {
         return protein;
     }
-    public void setProtein(float protein) {
+    public void setProtein(String protein) {
         this.protein = protein;
     }
 
-    public float getCarbs() {
+    public String getCarbs() {
         return carbs;
     }
-    public void setCarbs(float carbs) {
+    public void setCarbs(String carbs) {
         this.carbs = carbs;
     }
 
