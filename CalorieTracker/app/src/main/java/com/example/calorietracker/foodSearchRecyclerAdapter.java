@@ -4,6 +4,7 @@ package com.example.calorietracker;
 import static android.content.ContentValues.TAG;
 
 import android.content.Context;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -101,6 +102,16 @@ public class foodSearchRecyclerAdapter extends RecyclerView.Adapter<foodSearchRe
                 food.put("protein", model.getProtein());
                 food.put("id", true);
                 String userID;
+
+                new CountDownTimer(2000, 1000) {
+                    public void onTick(long millisUntilFinished) {
+                        holder.addFood.setText("Added");
+                    }
+
+                    public void onFinish() {
+                        holder.addFood.setText("Add");
+                    }
+                }.start();
 
                 FirebaseFirestore fdb = FirebaseFirestore.getInstance();
                 mAuth = FirebaseAuth.getInstance();
