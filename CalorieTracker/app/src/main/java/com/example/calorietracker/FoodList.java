@@ -52,12 +52,13 @@ public class FoodList extends AppCompatActivity {
 
         Intent intent = getIntent();
         String checkMeal = intent.getStringExtra("meal");
-        String date = intent.getStringExtra("date");
+        String calendarDay = intent.getStringExtra("date");
+        String calHeader = intent.getStringExtra("calHeader");
 
         list = new ArrayList<>();
 
         fStore = FirebaseFirestore.getInstance();
-        displayFoodAdapter = new DisplayFoodAdapter(this, list, checkMeal, date);
+        displayFoodAdapter = new DisplayFoodAdapter(this, list, checkMeal, calendarDay);
         rvDisplayBreakfast.setAdapter(displayFoodAdapter);
 
         switch (checkMeal){
@@ -66,7 +67,7 @@ public class FoodList extends AppCompatActivity {
             case "Dinner":
             case "Snack":
                 dashboardTitle.setText(checkMeal + " List");
-                showData(checkMeal, date);
+                showData(checkMeal, calendarDay);
                 break;
             default:
                 throw new IllegalArgumentException("Invalid Meal" + checkMeal);
@@ -76,6 +77,7 @@ public class FoodList extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(FoodList.this, Home.class);
+                saveIntentExtra(intent, calendarDay, calHeader, checkMeal);
                 startActivity(intent);
             }
         });
@@ -84,12 +86,17 @@ public class FoodList extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(FoodList.this, FoodSearch.class);
-                intent.putExtra("meal", checkMeal);
-                intent.putExtra("date", date);
+                saveIntentExtra(intent, calendarDay, calHeader, checkMeal);
                 startActivity(intent);
             }
         });
 
+    }
+
+    public void saveIntentExtra(Intent intent, String calendarDay, String calHeader, String meal){
+        intent.putExtra("meal", meal);
+        intent.putExtra("date", calendarDay);
+        intent.putExtra("calHeader", calHeader);
     }
 
     private void showData(String meal, String date) {

@@ -49,7 +49,8 @@ public class FoodSearch extends AppCompatActivity {
         searchFood(""); //initialize
         Intent intent = getIntent();
         String checkMeal = intent.getStringExtra("meal");
-        String date = intent.getStringExtra("date");
+        String calendarDay = intent.getStringExtra("date");
+        String calHeader = intent.getStringExtra("calHeader");
 
         dashboardTitle.setText("Search " + checkMeal);
 
@@ -57,8 +58,7 @@ public class FoodSearch extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(FoodSearch.this, FoodList.class);
-                intent.putExtra("meal", checkMeal);
-                intent.putExtra("date", date);
+                saveIntentExtra(intent, calendarDay, calHeader, checkMeal);
                 startActivity(intent);
             }
         });
@@ -70,6 +70,12 @@ public class FoodSearch extends AppCompatActivity {
                 searchFood(input);
             }
         });
+    }
+
+    public void saveIntentExtra(Intent intent, String calendarDay, String calHeader, String meal){
+        intent.putExtra("meal", meal);
+        intent.putExtra("date", calendarDay);
+        intent.putExtra("calHeader", calHeader);
     }
 
     public void searchFood(String input){

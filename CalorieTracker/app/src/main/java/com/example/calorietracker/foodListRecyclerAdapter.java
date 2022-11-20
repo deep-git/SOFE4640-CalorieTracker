@@ -57,7 +57,6 @@ public class foodListRecyclerAdapter extends RecyclerView.Adapter<foodListRecycl
         TextView tvBrandName;
         Button removeFood;
 
-
         public Viewholder(@NonNull View itemView) {
             super(itemView);
 
@@ -68,9 +67,7 @@ public class foodListRecyclerAdapter extends RecyclerView.Adapter<foodListRecycl
             tvCarbsCal = itemView.findViewById(R.id.tvCarbsCal);
             tvBrandName = itemView.findViewById(R.id.tvBrandName);
             removeFood = itemView.findViewById(R.id.removeFood);
-
         }
-
     }
 
     @Override

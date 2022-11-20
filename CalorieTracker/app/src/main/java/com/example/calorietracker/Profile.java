@@ -72,10 +72,16 @@ public class Profile extends AppCompatActivity {
         username = findViewById(R.id.username);
         email = findViewById(R.id.email);
 
+        Intent intent = getIntent();
+        String checkMeal = intent.getStringExtra("meal");
+        String calendarDay = intent.getStringExtra("date");
+        String calHeader = intent.getStringExtra("calHeader");
+
         home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Profile.this, Home.class);
+                saveIntentExtra(intent, calendarDay, calHeader, checkMeal);
                 startActivity(intent);
             }
         });
@@ -84,6 +90,7 @@ public class Profile extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Profile.this, Profile.class);
+                saveIntentExtra(intent, calendarDay, calHeader, checkMeal);
                 startActivity(intent);
             }
         });
@@ -173,5 +180,11 @@ public class Profile extends AppCompatActivity {
         }else{
             Toast.makeText(Profile.this, "Error: unable to retrieve profile details.", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public void saveIntentExtra(Intent intent, String calendarDay, String calHeader, String meal){
+        intent.putExtra("meal", meal);
+        intent.putExtra("date", calendarDay);
+        intent.putExtra("calHeader", calHeader);
     }
 }

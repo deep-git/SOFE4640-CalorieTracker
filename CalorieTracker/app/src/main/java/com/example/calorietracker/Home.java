@@ -21,8 +21,6 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import org.checkerframework.checker.units.qual.A;
-
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -69,13 +67,29 @@ public class Home extends AppCompatActivity {
         calendar.clear();
 
         Long today = MaterialDatePicker.todayInUtcMilliseconds();
+        String breakfast = "Breakfast";
+        String lunch = "Lunch";
+        String dinner = "Dinner";
+        String snack = "Snack";
 
         MaterialDatePicker.Builder builder = MaterialDatePicker.Builder.datePicker();
         builder.setTitleText("Select a date");
-        builder.setSelection(today);
         MaterialDatePicker<Long> materialDatePicker = builder.build();
         final String[] calendarDay = new String[1];
-        calendarDay[0] = String.valueOf(today);
+        final String[] calHeader = new String[1];
+
+        Intent intent = getIntent();
+        String selectedDay = intent.getStringExtra("date");
+
+
+        if (selectedDay == null) {
+            builder.setSelection(today);
+            calendarDay[0] = String.valueOf(today);
+        }else{
+            calendarDay[0] = selectedDay;
+        }
+
+        Toast.makeText(Home.this, "" + calHeader[0], Toast.LENGTH_SHORT).show();
 
         calendarSelection.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,24 +98,11 @@ public class Home extends AppCompatActivity {
             }
         });
 
-        materialDatePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener<Long>() {
-            @Override
-            public void onPositiveButtonClick(Long selection) {
-                date.setText(materialDatePicker.getHeaderText());
-                calendarDay[0] = String.valueOf(selection);
-
-                totalCals.clear();
-                getCalories("Breakfast", calendarDay[0]);
-                getCalories("Lunch", calendarDay[0]);
-                getCalories("Dinner", calendarDay[0]);
-                getCalories("Snack", calendarDay[0]);
-            }
-        });
-
         home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Home.this, Home.class);
+                saveIntentExtra(intent, calendarDay, calHeader, breakfast);
                 startActivity(intent);
             }
         });
@@ -110,7 +111,21 @@ public class Home extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Home.this, Profile.class);
+                saveIntentExtra(intent, calendarDay, calHeader, breakfast);
                 startActivity(intent);
+            }
+        });
+
+        materialDatePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener<Long>() {
+            @Override
+            public void onPositiveButtonClick(Long selection) {
+                calendarDay[0] = String.valueOf(selection);
+                calHeader[0] = materialDatePicker.getHeaderText();
+                saveIntentExtra(intent, calendarDay, calHeader, breakfast);
+
+                date.setText(calHeader[0]);
+                totalCals.clear();
+                getAllCalories(calendarDay);
             }
         });
 
@@ -120,9 +135,7 @@ public class Home extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Home.this, FoodList.class);
-                intent.putExtra("meal", "Breakfast");
-                intent.putExtra("date", calendarDay[0]);
-
+                saveIntentExtra(intent, calendarDay, calHeader, breakfast);
                 startActivity(intent);
             }
         });
@@ -131,9 +144,7 @@ public class Home extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Home.this, FoodList.class);
-                intent.putExtra("meal", "Lunch");
-                intent.putExtra("date", calendarDay[0]);
-
+                saveIntentExtra(intent, calendarDay, calHeader, lunch);
                 startActivity(intent);
             }
         });
@@ -142,9 +153,7 @@ public class Home extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Home.this, FoodList.class);
-                intent.putExtra("meal", "Dinner");
-                intent.putExtra("date", calendarDay[0]);
-
+                saveIntentExtra(intent, calendarDay, calHeader, dinner);
                 startActivity(intent);
             }
         });
@@ -153,9 +162,7 @@ public class Home extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Home.this, FoodList.class);
-                intent.putExtra("meal", "Snack");
-                intent.putExtra("date", calendarDay[0]);
-
+                saveIntentExtra(intent, calendarDay, calHeader, snack);
                 startActivity(intent);
             }
         });
@@ -170,13 +177,20 @@ public class Home extends AppCompatActivity {
         calories = new ArrayList<String>();
 
         totalCals.clear();
+        getAllCalories(calendarDay);
+    }
 
-        //getTotalCals();
+    public void saveIntentExtra(Intent intent, String[] calendarDay, String[] calHeader, String meal){
+        intent.putExtra("meal", meal);
+        intent.putExtra("date", calendarDay[0]);
+        intent.putExtra("calHeader", calHeader[0]);
+    }
+
+    public void getAllCalories(String[] calendarDay){
         getCalories("Breakfast", calendarDay[0]);
         getCalories("Lunch", calendarDay[0]);
         getCalories("Dinner", calendarDay[0]);
         getCalories("Snack", calendarDay[0]);
-
     }
 
     public void getCalories(String checkMeal, String date){
@@ -253,5 +267,7 @@ public class Home extends AppCompatActivity {
         TextView totalCalorie = findViewById(R.id.totalCalorie);
         totalCalorie.setText("" + (df.format(sumTotalCal)) + " Cal");
     }
+
+
 
 }

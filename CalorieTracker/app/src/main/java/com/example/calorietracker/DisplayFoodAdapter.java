@@ -40,7 +40,6 @@ public class DisplayFoodAdapter extends RecyclerView.Adapter<DisplayFoodAdapter.
         this.mList = mList;
         this.checkMeal = checkMeal;
         this.date = date;
-
     }
 
     @NonNull
