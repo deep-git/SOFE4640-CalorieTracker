@@ -21,6 +21,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import org.checkerframework.checker.units.qual.A;
+
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -72,6 +74,8 @@ public class Home extends AppCompatActivity {
         builder.setTitleText("Select a date");
         builder.setSelection(today);
         MaterialDatePicker<Long> materialDatePicker = builder.build();
+        final String[] calendarDay = new String[1];
+        calendarDay[0] = String.valueOf(today);
 
         calendarSelection.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,6 +88,13 @@ public class Home extends AppCompatActivity {
             @Override
             public void onPositiveButtonClick(Long selection) {
                 date.setText(materialDatePicker.getHeaderText());
+                calendarDay[0] = String.valueOf(selection);
+
+                totalCals.clear();
+                getCalories("Breakfast", calendarDay[0]);
+                getCalories("Lunch", calendarDay[0]);
+                getCalories("Dinner", calendarDay[0]);
+                getCalories("Snack", calendarDay[0]);
             }
         });
 
@@ -110,6 +121,8 @@ public class Home extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(Home.this, FoodList.class);
                 intent.putExtra("meal", "Breakfast");
+                intent.putExtra("date", calendarDay[0]);
+
                 startActivity(intent);
             }
         });
@@ -119,6 +132,8 @@ public class Home extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(Home.this, FoodList.class);
                 intent.putExtra("meal", "Lunch");
+                intent.putExtra("date", calendarDay[0]);
+
                 startActivity(intent);
             }
         });
@@ -128,6 +143,8 @@ public class Home extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(Home.this, FoodList.class);
                 intent.putExtra("meal", "Dinner");
+                intent.putExtra("date", calendarDay[0]);
+
                 startActivity(intent);
             }
         });
@@ -137,6 +154,8 @@ public class Home extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(Home.this, FoodList.class);
                 intent.putExtra("meal", "Snack");
+                intent.putExtra("date", calendarDay[0]);
+
                 startActivity(intent);
             }
         });
@@ -150,17 +169,19 @@ public class Home extends AppCompatActivity {
         totalCals = new ArrayList<String>();
         calories = new ArrayList<String>();
 
+        totalCals.clear();
+
         //getTotalCals();
-        getCalories("Breakfast");
-        getCalories("Lunch");
-        getCalories("Dinner");
-        getCalories("Snack");
+        getCalories("Breakfast", calendarDay[0]);
+        getCalories("Lunch", calendarDay[0]);
+        getCalories("Dinner", calendarDay[0]);
+        getCalories("Snack", calendarDay[0]);
 
     }
 
-    public void getCalories(String checkMeal){
-        fdb.collection("users")
-                .document(userID)
+    public void getCalories(String checkMeal, String date){
+        fdb.collection("users").document(userID)
+                .collection("calendar").document(date)
                 .collection(checkMeal)
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override

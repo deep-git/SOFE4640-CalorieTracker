@@ -29,14 +29,16 @@ public class foodSearchRecyclerAdapter extends RecyclerView.Adapter<foodSearchRe
     private final Context context;
     private final ArrayList<foodDataModel> foodModelArrayList;
     private final String checkMeal;
+    private final String date;
     FirebaseAuth mAuth;
 
 //    -------------------------------------------------------------------------------------------
 
-    public foodSearchRecyclerAdapter(Context context, ArrayList<foodDataModel> foodModelArrayList, String checkMeal) {
+    public foodSearchRecyclerAdapter(Context context, ArrayList<foodDataModel> foodModelArrayList, String checkMeal, String date) {
         this.context = context;
         this.foodModelArrayList = foodModelArrayList;
         this.checkMeal = checkMeal;
+        this.date = date;
     }
 
     @NonNull
@@ -103,8 +105,8 @@ public class foodSearchRecyclerAdapter extends RecyclerView.Adapter<foodSearchRe
                 mAuth = FirebaseAuth.getInstance();
                 userID = mAuth.getCurrentUser().getUid();
                 fdb.collection("users").document(userID)
-                        .collection(checkMeal)
-                        .add(food)
+                        .collection("calendar").document(date)
+                        .collection(checkMeal).add(food)
                         .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {

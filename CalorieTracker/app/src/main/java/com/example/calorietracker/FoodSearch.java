@@ -49,6 +49,7 @@ public class FoodSearch extends AppCompatActivity {
         searchFood(""); //initialize
         Intent intent = getIntent();
         String checkMeal = intent.getStringExtra("meal");
+        String date = intent.getStringExtra("date");
 
         dashboardTitle.setText("Search " + checkMeal);
 
@@ -57,6 +58,7 @@ public class FoodSearch extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(FoodSearch.this, FoodList.class);
                 intent.putExtra("meal", checkMeal);
+                intent.putExtra("date", date);
                 startActivity(intent);
             }
         });
@@ -109,8 +111,9 @@ public class FoodSearch extends AppCompatActivity {
 
                 Intent intent = getIntent();
                 String checkMeal = intent.getStringExtra("meal");
+                String date = intent.getStringExtra("date");
 
-                foodSearchRecyclerAdapter foodAdapter = new foodSearchRecyclerAdapter(FoodSearch.this, foodArrayList, checkMeal);
+                foodSearchRecyclerAdapter foodAdapter = new foodSearchRecyclerAdapter(FoodSearch.this, foodArrayList, checkMeal, date);
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(FoodSearch.this, LinearLayoutManager.VERTICAL, false);
                 rvCardList.setLayoutManager(linearLayoutManager);
                 rvCardList.setAdapter(foodAdapter);

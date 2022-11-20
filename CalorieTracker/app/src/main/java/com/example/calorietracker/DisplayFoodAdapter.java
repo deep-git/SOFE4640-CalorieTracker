@@ -28,14 +28,18 @@ public class DisplayFoodAdapter extends RecyclerView.Adapter<DisplayFoodAdapter.
     private FoodList activity;
     private List<foodDataModel> mList;
     private String checkMeal;
+    private String date;
+
     FirebaseFirestore fStore;
     String userID;
     String breakfastID;
 
-    public DisplayFoodAdapter(FoodList activity, List<foodDataModel> mList, String checkMeal) {
+    public DisplayFoodAdapter(FoodList activity, List<foodDataModel> mList, String checkMeal, String date) {
         this.activity = activity;
         this.mList = mList;
         this.checkMeal = checkMeal;
+        this.date = date;
+
     }
 
     @NonNull
@@ -60,8 +64,8 @@ public class DisplayFoodAdapter extends RecyclerView.Adapter<DisplayFoodAdapter.
             @Override
             public void onClick(View view) {
                 userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                fStore.collection("users")
-                        .document(userID)
+                fStore.collection("users").document(userID)
+                        .collection("calendar").document(date)
                         .collection(checkMeal)
                         .whereEqualTo("itemName",
                                 mList.get(position)
@@ -73,10 +77,9 @@ public class DisplayFoodAdapter extends RecyclerView.Adapter<DisplayFoodAdapter.
                                 Log.d(TAG, document.getId() + " => " + document.getData());
                                 breakfastID = document.getId();
 
-                                fStore.collection("users")
-                                        .document(userID)
-                                        .collection(checkMeal)
-                                        .document(breakfastID)
+                                fStore.collection("users").document(userID)
+                                        .collection("calendar").document(date)
+                                        .collection(checkMeal).document(breakfastID)
                                         .delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
                                             public void onSuccess(Void aVoid) {

@@ -52,14 +52,27 @@ public class FoodList extends AppCompatActivity {
 
         Intent intent = getIntent();
         String checkMeal = intent.getStringExtra("meal");
+        String date = intent.getStringExtra("date");
+
         list = new ArrayList<>();
 
         fStore = FirebaseFirestore.getInstance();
-//        displayFoodAdapter = new DisplayFoodAdapter(this, list, checkMeal);
-//        rvDisplayBreakfast.setAdapter(displayFoodAdapter);
+        displayFoodAdapter = new DisplayFoodAdapter(this, list, checkMeal, date);
+        rvDisplayBreakfast.setAdapter(displayFoodAdapter);
+
+        switch (checkMeal){
+            case "Breakfast":
+            case "Lunch":
+            case "Dinner":
+            case "Snack":
+                dashboardTitle.setText(checkMeal + " List");
+                showData(checkMeal, date);
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid Meal" + checkMeal);
+        }
 
         back.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(FoodList.this, Home.class);
@@ -68,32 +81,21 @@ public class FoodList extends AppCompatActivity {
         });
 
         search.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(FoodList.this, FoodSearch.class);
                 intent.putExtra("meal", checkMeal);
+                intent.putExtra("date", date);
                 startActivity(intent);
             }
         });
 
-        switch (checkMeal){
-            case "Breakfast":
-            case "Lunch":
-            case "Dinner":
-            case "Snack":
-                dashboardTitle.setText(checkMeal + " List");
-                showData(checkMeal);
-                break;
-            default:
-                throw new IllegalArgumentException("Invalid Meal" + checkMeal);
-        }
     }
 
-    private void showData(String meal) {
+    private void showData(String meal, String date) {
         userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        fStore.collection("users")
-                .document(userID)
+        fStore.collection("users").document(userID)
+                .collection("calendar").document(date)
                 .collection(meal)
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -111,8 +113,9 @@ public class FoodList extends AppCompatActivity {
 
                 Intent intent = getIntent();
                 String checkMeal = intent.getStringExtra("meal");
+                String date = intent.getStringExtra("date");
 
-                displayFoodAdapter = new DisplayFoodAdapter(FoodList.this, list, checkMeal);
+                displayFoodAdapter = new DisplayFoodAdapter(FoodList.this, list, checkMeal, date);
                 rvDisplayBreakfast.setAdapter(displayFoodAdapter);
 
             }
