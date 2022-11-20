@@ -5,7 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -22,6 +24,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -63,10 +66,14 @@ public class Home extends AppCompatActivity {
         dinnerAddBackground = findViewById(R.id.dinnerAddBackground);
         snackAddBackground = findViewById(R.id.snackAddBackground);
 
-        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
-        calendar.clear();
+//        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+//        calendar.clear();
+
+        SimpleDateFormat simpleFormat = new SimpleDateFormat("MMM dd, yyyy");
+        simpleFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
         Long today = MaterialDatePicker.todayInUtcMilliseconds();
+
         String breakfast = "Breakfast";
         String lunch = "Lunch";
         String dinner = "Dinner";
@@ -80,21 +87,36 @@ public class Home extends AppCompatActivity {
 
         Intent intent = getIntent();
         String selectedDay = intent.getStringExtra("date");
+        calHeader[0] = intent.getStringExtra("calHeader");
 
-
-        if (selectedDay == null) {
-            builder.setSelection(today);
+        if (selectedDay == null ) {
             calendarDay[0] = String.valueOf(today);
+            calHeader[0] = simpleFormat.format(today);
+
         }else{
             calendarDay[0] = selectedDay;
         }
 
-        Toast.makeText(Home.this, "" + calHeader[0], Toast.LENGTH_SHORT).show();
+        date.setText(calHeader[0]);
+
+//        Toast.makeText(Home.this, "Day: " + calendarDay[0] + " Header: " + calHeader[0], Toast.LENGTH_SHORT).show();
 
         calendarSelection.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 materialDatePicker.show(getSupportFragmentManager(), "DATE_PICKER");
+            }
+        });
+
+        materialDatePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener<Long>() {
+            @Override
+            public void onPositiveButtonClick(Long selection) {
+                calendarDay[0] = String.valueOf(selection);
+                calHeader[0] = materialDatePicker.getHeaderText();
+
+                date.setText(calHeader[0]);
+                totalCals.clear();
+                getAllCalories(calendarDay);
             }
         });
 
@@ -116,18 +138,7 @@ public class Home extends AppCompatActivity {
             }
         });
 
-        materialDatePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener<Long>() {
-            @Override
-            public void onPositiveButtonClick(Long selection) {
-                calendarDay[0] = String.valueOf(selection);
-                calHeader[0] = materialDatePicker.getHeaderText();
-                saveIntentExtra(intent, calendarDay, calHeader, breakfast);
 
-                date.setText(calHeader[0]);
-                totalCals.clear();
-                getAllCalories(calendarDay);
-            }
-        });
 
 //  --------------------------------------------------------------------------------------------------
 
