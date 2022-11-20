@@ -1,8 +1,10 @@
 package com.example.calorietracker;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -12,6 +14,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -21,6 +25,7 @@ public class Login extends AppCompatActivity {
 
     TextView back;
     TextView noAccount;
+    TextView forgotPassword;
     TextView signIn;
     EditText enterEmail;
     EditText enterPassword;
@@ -34,6 +39,7 @@ public class Login extends AppCompatActivity {
 
         back = (TextView) findViewById(R.id.back);
         noAccount = (TextView) findViewById(R.id.noAccount);
+        forgotPassword = (TextView) findViewById(R.id.forgotPassword);
         signIn = (TextView) findViewById(R.id.signIn);
         enterEmail = (EditText) findViewById(R.id.email);
         enterPassword = (EditText) findViewById(R.id.password);
@@ -55,6 +61,62 @@ public class Login extends AppCompatActivity {
         });
 
         mAuth = FirebaseAuth.getInstance();
+
+        forgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                EditText resetEnterEmail = new EditText(view.getContext());
+                AlertDialog.Builder passwordReset = new AlertDialog.Builder(view.getContext());
+
+                passwordReset.setTitle("Reset Password");
+                passwordReset.setMessage("Enter your email to receive reset link.");
+                passwordReset.setView(resetEnterEmail);
+
+                passwordReset.setPositiveButton("Send", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                });
+
+
+                passwordReset.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+
+                AlertDialog dialog = passwordReset.create();
+                dialog.show();
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View view) {
+                        if (TextUtils.isEmpty(resetEnterEmail.getText().toString())) {
+                            resetEnterEmail.setError("Email is required.");
+                            return;
+                        }
+                        mAuth.sendPasswordResetEmail(resetEnterEmail.getText().toString()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
+                                Toast.makeText(Login.this, "The password reset link has been sent to your email.", Toast.LENGTH_SHORT).show();
+                                dialog.dismiss();
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(Login.this, "Error sending password reset link, please try again.", Toast.LENGTH_SHORT).show();
+                                    dialog.dismiss();
+                                }
+                        });
+                    }
+                });
+            }
+        });
+
         mAuthStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
