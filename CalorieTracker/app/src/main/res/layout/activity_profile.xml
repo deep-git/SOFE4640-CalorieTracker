@@ -96,7 +96,7 @@
             android:id="@+id/statistics"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="15dp"
             android:layout_gravity="center_horizontal"
             android:fontFamily="@font/roboto"
             android:text="Initial Statistics"
@@ -109,7 +109,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:layout_marginLeft="45dp">
 
             <TextView
@@ -120,8 +120,9 @@
                 android:text="Age"
                 android:textColor="@color/white"
                 android:textSize="16dp" />
+
             <EditText
-                android:id="@+id/age"
+                android:id="@+id/enterAge"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto"
@@ -129,12 +130,23 @@
                 android:hint="0"
                 android:textColor="@color/white"
                 android:textSize="16dp" />
+
+            <TextView
+                android:id="@+id/age"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:fontFamily="@font/roboto"
+                android:text=""
+                android:textColor="@color/white"
+                android:textSize="16dp" />
+
             <TextView
                 android:id="@+id/ageMetric"
-                android:layout_width="85dp"
+                android:layout_width="89dp"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto"
                 android:layout_marginLeft="10dp"
+                android:fontFamily="@font/roboto"
                 android:text="years"
                 android:textColor="@color/white"
                 android:textSize="16dp" />
@@ -157,12 +169,21 @@
                 android:textColor="@color/white"
                 android:textSize="16dp" />
             <EditText
-                android:id="@+id/weight"
+                android:id="@+id/enterWeight"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto"
                 android:textAlignment="center"
                 android:hint="0"
+                android:textColor="@color/white"
+                android:textSize="16dp" />
+            <TextView
+                android:id="@+id/weight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:fontFamily="@font/roboto"
+                android:text=""
                 android:textColor="@color/white"
                 android:textSize="16dp" />
             <TextView
@@ -192,12 +213,21 @@
                 android:textColor="@color/white"
                 android:textSize="16dp" />
             <EditText
-                android:id="@+id/height"
+                android:id="@+id/enterHeight"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto"
                 android:textAlignment="center"
                 android:hint="0"
+                android:textColor="@color/white"
+                android:textSize="16dp" />
+            <TextView
+                android:id="@+id/height"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:fontFamily="@font/roboto"
+                android:text=""
                 android:textColor="@color/white"
                 android:textSize="16dp" />
             <TextView
@@ -211,6 +241,18 @@
                 android:textSize="16dp" />
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/update"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/roboto"
+            android:text="Update"
+            android:textColor="@color/white"
+            android:background="#5856D6"
+            android:padding="10dp"
+            android:textSize="16dp"
+            android:layout_gravity="center" />
 
         <TextView
             android:id="@+id/logout"
@@ -220,7 +262,7 @@
             android:background="@drawable/button_util"
             android:fontFamily="@font/roboto"
             android:gravity="center"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="15dp"
             android:layout_gravity="center_horizontal"
             android:text="Log Out"
             android:textAlignment="center"
@@ -233,7 +275,7 @@
             android:layout_height="80dp"
             android:background="@drawable/home_bar"
             android:orientation="horizontal"
-            android:layout_marginTop="-75dp"
+            android:layout_marginTop="-77dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
