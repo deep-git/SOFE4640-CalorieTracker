@@ -289,15 +289,15 @@
                 android:layout_weight="1"
                 app:srcCompat="@drawable/home" />
 
-            <ImageView
-                android:id="@+id/progress"
-                android:layout_width="50dp"
-                android:layout_height="70dp"
-                android:layout_marginLeft="40dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginRight="40dp"
-                android:layout_weight="1"
-                app:srcCompat="@drawable/progress" />
+<!--            <ImageView-->
+<!--                android:id="@+id/progress"-->
+<!--                android:layout_width="50dp"-->
+<!--                android:layout_height="70dp"-->
+<!--                android:layout_marginLeft="40dp"-->
+<!--                android:layout_marginTop="5dp"-->
+<!--                android:layout_marginRight="40dp"-->
+<!--                android:layout_weight="1"-->
+<!--                app:srcCompat="@drawable/progress" />-->
 
             <ImageView
                 android:id="@+id/profile"
