@@ -20,7 +20,7 @@
             android:id="@+id/dashboardTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Breakfast List"
+            android:text="Food List"
             android:textColor="@color/white"
             android:textSize="36dp"
             android:fontFamily="@font/roboto"
