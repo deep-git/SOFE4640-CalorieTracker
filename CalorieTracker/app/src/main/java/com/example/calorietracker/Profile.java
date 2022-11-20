@@ -34,9 +34,9 @@ public class Profile extends AppCompatActivity {
     TextView logout;
     TextView username;
     TextView email;
-    TextView age;
-    TextView weight;
-    TextView height;
+    EditText age;
+    EditText weight;
+    EditText height;
     TextView update;
 
     EditText enterAge;
@@ -65,9 +65,9 @@ public class Profile extends AppCompatActivity {
         enterAge = (EditText) findViewById(R.id.enterAge);
         enterWeight = (EditText) findViewById(R.id.enterWeight);
         enterHeight = (EditText) findViewById(R.id.enterHeight);
-        age = (TextView) findViewById(R.id.age);
-        weight = (TextView) findViewById(R.id.weight);
-        height = (TextView) findViewById(R.id.height);
+        age = (EditText) findViewById(R.id.enterAge);
+        weight = (EditText) findViewById(R.id.enterWeight);
+        height = (EditText) findViewById(R.id.enterHeight);
 
         username = findViewById(R.id.username);
         email = findViewById(R.id.email);

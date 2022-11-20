@@ -3,6 +3,7 @@ package com.example.calorietracker;
 import static android.content.ContentValues.TAG;
 
 import android.annotation.SuppressLint;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -63,6 +64,8 @@ public class DisplayFoodAdapter extends RecyclerView.Adapter<DisplayFoodAdapter.
         holder.removeFood.setOnClickListener(new android.view.View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                holder.removeFood.setText("Removed");
+
                 userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
                 fStore.collection("users").document(userID)
                         .collection("calendar").document(date)
