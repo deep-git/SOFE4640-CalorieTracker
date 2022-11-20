@@ -38,6 +38,15 @@ public class Login extends AppCompatActivity {
         enterEmail = (EditText) findViewById(R.id.email);
         enterPassword = (EditText) findViewById(R.id.password);
 
+        back.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Login.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
+
         noAccount.setOnClickListener(new View.OnClickListener() {
 
             @Override
