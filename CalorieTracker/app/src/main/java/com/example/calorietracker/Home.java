@@ -56,7 +56,7 @@ public class Home extends AppCompatActivity {
         setContentView(R.layout.activity_home);
 
         home = findViewById(R.id.home);
-        progress = findViewById(R.id.progress);
+//        progress = findViewById(R.id.progress);
         profile = findViewById(R.id.profile);
         calendarSelection = findViewById(R.id.calendarSelection);
         date = findViewById(R.id.date);

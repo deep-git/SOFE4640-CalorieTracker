@@ -60,7 +60,7 @@ public class Profile extends AppCompatActivity {
         logout = (TextView) findViewById(R.id.logout);
         update = (TextView) findViewById(R.id.update);
         home = (ImageView) findViewById(R.id.home);
-        progress = (ImageView) findViewById(R.id.progress);
+//        progress = (ImageView) findViewById(R.id.progress);
         profile = (ImageView) findViewById(R.id.profile);
         enterAge = (EditText) findViewById(R.id.enterAge);
         enterWeight = (EditText) findViewById(R.id.enterWeight);
