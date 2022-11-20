@@ -39,7 +39,6 @@ public class Login extends AppCompatActivity {
         enterPassword = (EditText) findViewById(R.id.password);
 
         back.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Login.this, MainActivity.class);
@@ -48,7 +47,6 @@ public class Login extends AppCompatActivity {
         });
 
         noAccount.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Login.this, Register.class);
@@ -72,7 +70,6 @@ public class Login extends AppCompatActivity {
         };
 
         signIn.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View view) {
 
@@ -96,7 +93,8 @@ public class Login extends AppCompatActivity {
                             Toast.makeText(Login.this, "Logged in Successfully.", Toast.LENGTH_SHORT).show();
                             startActivity(new Intent(getApplicationContext(), Home.class));
                         } else {
-                            Toast.makeText(Login.this, "Error: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Login.this, "User unavailable. Please register.", Toast.LENGTH_SHORT).show();
+//                          Toast.makeText(Login.this, "Error: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
