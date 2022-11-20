@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -84,6 +85,8 @@ public class DisplayFoodAdapter extends RecyclerView.Adapter<DisplayFoodAdapter.
                                             @Override
                                             public void onSuccess(Void aVoid) {
                                                 Log.d(TAG, "DocumentSnapshot successfully deleted!");
+                                                Toast.makeText(view.getContext(), "Item Removed", Toast.LENGTH_SHORT).show();
+
                                             }
                                         })
                                         .addOnFailureListener(new OnFailureListener() {

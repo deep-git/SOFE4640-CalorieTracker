@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -113,6 +114,8 @@ public class foodSearchRecyclerAdapter extends RecyclerView.Adapter<foodSearchRe
                         Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
                         String id = documentReference.getId();
                         documentReference.set(food);
+
+                        Toast.makeText(view.getContext(), "Item Added", Toast.LENGTH_SHORT).show();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
